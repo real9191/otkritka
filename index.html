@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С 8 Марта, Маша!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 16px;
+            margin: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 80, 130, 0.4);
+            font-size: 1.5rem;
+            user-select: none;
+            white-space: nowrap;
+            animation: fall linear infinite;
+            top: -10%;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .content {
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            padding: 20px 0;
+        }
+
+        h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 3px 3px 0 #ff4d6d, 5px 5px 0 rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .bouquet {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px 0 20px;
+            flex-wrap: wrap;
+        }
+
+        .flower-big {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 6px 3px rgba(255, 105, 135, 0.5));
+            animation: wave 2s infinite alternate ease-in-out;
+            transform-origin: bottom;
+        }
+
+        .flower-big:nth-child(2) { animation-delay: 0.2s; }
+        .flower-big:nth-child(3) { animation-delay: 0.4s; }
+        .flower-big:nth-child(4) { animation-delay: 0.6s; }
+        .flower-big:nth-child(5) { animation-delay: 0.8s; }
+        .flower-big:nth-child(6) { animation-delay: 1s; }
+
+        @keyframes wave {
+            0% { transform: rotate(-8deg); }
+            100% { transform: rotate(8deg); }
+        }
+
+        .greeting {
+            font-size: 1.3rem;
+            color: white;
+            text-shadow: 2px 2px 0 #ff4d6d, 3px 3px 0 rgba(0,0,0,0.3);
+            padding: 15px 10px;
+            margin: 10px 0 20px;
+            line-height: 1.6;
+            white-space: pre-line;
+            text-align: left;
+            font-weight: 600;
+            background: none;
+            backdrop-filter: none;
+            border: none;
+        }
+
+        .gif-container {
+            margin: 20px 0 16px;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 15px 25px -8px rgba(255, 80, 130, 0.4);
+            border: 3px solid white;
+            padding: 8px;
+            background: none;
+        }
+
+        .gif-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 28px;
+            display: block;
+        }
+
+        .signature {
+            margin-top: 28px;
+            font-size: 1.3rem;
+            color: white;
+            text-shadow: 2px 2px 0 #ff4d6d;
+            font-style: italic;
+            padding: 10px 20px;
+            display: inline-block;
+            background: none;
+            backdrop-filter: none;
+            border: none;
+        }
+
+        @media (max-width: 420px) {
+            h1 { font-size: 2.8rem; }
+            .greeting { font-size: 1.2rem; }
+            .flower-big { font-size: 2.2rem; }
+            .bouquet { gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <div class="content">
+        <h1>8 МАРТА</h1>
+        
+        <div class="bouquet">
+            <span class="flower-big">🌷</span>
+            <span class="flower-big">🌹</span>
+            <span class="flower-big">🌸</span>
+            <span class="flower-big">🌺</span>
+            <span class="flower-big">🌼</span>
+            <span class="flower-big">🌻</span>
+        </div>
+        
+        <div class="greeting">
+            Этомо дүктем — дуга меда,<br>
+            Маша!<br>
+            <br>
+            С праздником весны! Желаю тебе счастья,<br>
+            здоровья и только ярких дней. Ты — самая<br>
+            лучшая!
+        </div>
+
+        <div class="gif-container">
+            <img src="https://media.tenor.com/IhGXwIB8R3MAAAAi/cute-rose.gif" alt="Милые цветы">
+        </div>
+
+        <div class="signature">
+            ❤️ С любовью ❤️
+        </div>
+    </div>
+
+    <script>
+        function startHearts() {
+            const container = document.getElementById('heartsContainer');
+            if (!container) return;
+            
+            const symbols = ['❤️', '🧡', '💛', '💚', '💙', '💜', '🤍', '♥️', '💖', '💗', '💓', '💕'];
+            
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                
+                heart.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                
+                const size = 0.8 + Math.random() * 1.5;
+                heart.style.fontSize = size + 'rem';
+                
+                const duration = 4 + Math.random() * 6;
+                heart.style.animationDuration = duration + 's';
+                
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heart.style.opacity = 0.2 + Math.random() * 0.3;
+                
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, duration * 1000);
+            }
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 100);
+            }
+            
+            setInterval(createHeart, 300);
+        }
+
+        window.onload = startHearts;
+    </script>
+</body>
+</html>
