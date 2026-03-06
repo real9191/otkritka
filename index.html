@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>С 8 Марта, Маша!</title>
+    <title>С 8 Марта!</title>
     <style>
+        /* ОСНОВНЫЕ НАСТРОЙКИ */
         * {
             margin: 0;
             padding: 0;
@@ -16,15 +17,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(145deg, #ffc3d0 0%, #ffd9b0 100%);
-            font-family: 'Georgia', 'Times New Roman', 'Playfair Display', serif;
+            background: linear-gradient(135deg, #fbc2c2 0%, #f8e0e0 100%);
+            font-family: 'Georgia', 'Times New Roman', serif;
             padding: 16px;
             margin: 0;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* Контейнер для сердечек */
+        /* КОНТЕЙНЕР ДЛЯ СЕРДЕЧЕК */
         .hearts-container {
             position: fixed;
             top: 0;
@@ -32,17 +33,16 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 100;
+            z-index: 10;
             overflow: hidden;
         }
 
-        /* Сердечки */
+        /* САМИ СЕРДЕЧКИ */
         .heart {
             position: absolute;
-            color: rgba(255, 70, 120, 0.5);
+            color: rgba(255, 100, 150, 0.4);
             font-size: 1.5rem;
             user-select: none;
-            white-space: nowrap;
             animation: fall linear forwards;
             top: -10%;
         }
@@ -53,10 +53,10 @@
                 opacity: 0;
             }
             10% {
-                opacity: 0.9;
+                opacity: 0.7;
             }
-            80% {
-                opacity: 0.8;
+            90% {
+                opacity: 0.5;
             }
             100% {
                 transform: translateY(120vh) rotate(360deg);
@@ -64,148 +64,117 @@
             }
         }
 
-        /* Контент */
+        /* КОНТЕНТ */
         .content {
-            max-width: 500px;
+            max-width: 450px;
             width: 100%;
             text-align: center;
             position: relative;
             z-index: 1;
-            padding: 30px 20px;
-            animation: contentAppear 1.5s ease-out;
+            padding: 20px;
+            animation: appear 1.2s ease-out;
         }
 
-        @keyframes contentAppear {
+        @keyframes appear {
             0% { opacity: 0; transform: scale(0.95); }
             100% { opacity: 1; transform: scale(1); }
         }
 
-        /* Заголовок */
+        /* ЗАГОЛОВОК */
         h1 {
-            font-size: 3.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            text-shadow: 4px 4px 0 #ff6b8b, 6px 6px 0 rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            letter-spacing: 3px;
-            animation: titleGlow 3s infinite alternate;
+            font-size: 3rem;
+            font-weight: normal;
+            color: #b3426f;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            animation: glow 2s infinite alternate;
         }
 
-        @keyframes titleGlow {
-            0% { text-shadow: 4px 4px 0 #ff6b8b, 6px 6px 0 rgba(0,0,0,0.1); }
-            100% { text-shadow: 6px 6px 0 #ff4d6d, 8px 8px 0 rgba(0,0,0,0.2); }
+        @keyframes glow {
+            0% { text-shadow: 2px 2px 0 #ffd9e2; }
+            100% { text-shadow: 4px 4px 0 #ffb6c1; }
         }
 
-        /* Букет с поэтапным появлением */
+        /* БУКЕТ ИЗ ПРОСТЫХ ФИГУР */
         .bouquet {
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin: 20px 0 30px;
+            margin: 20px 0 25px;
             flex-wrap: wrap;
-            min-height: 80px;
         }
 
-        .flower {
-            font-size: 2.8rem;
-            filter: drop-shadow(0 8px 5px rgba(255, 80, 130, 0.4));
-            animation: flowerWave 2.5s infinite alternate ease-in-out;
-            transform-origin: bottom;
+        .shape {
+            font-size: 2.5rem;
             opacity: 0;
+            transform: scale(0);
+            animation: shapePop 0.4s ease-out forwards;
         }
 
-        /* Появляются по очереди */
-        .flower:nth-child(1) { animation: flowerAppear 0.6s ease-out forwards, flowerWave 2.5s infinite alternate ease-in-out 0.6s; }
-        .flower:nth-child(2) { animation: flowerAppear 0.6s ease-out 0.2s forwards, flowerWave 2.5s infinite alternate ease-in-out 0.8s; }
-        .flower:nth-child(3) { animation: flowerAppear 0.6s ease-out 0.4s forwards, flowerWave 2.5s infinite alternate ease-in-out 1.0s; }
-        .flower:nth-child(4) { animation: flowerAppear 0.6s ease-out 0.6s forwards, flowerWave 2.5s infinite alternate ease-in-out 1.2s; }
-        .flower:nth-child(5) { animation: flowerAppear 0.6s ease-out 0.8s forwards, flowerWave 2.5s infinite alternate ease-in-out 1.4s; }
-        .flower:nth-child(6) { animation: flowerAppear 0.6s ease-out 1.0s forwards, flowerWave 2.5s infinite alternate ease-in-out 1.6s; }
+        .shape:nth-child(1) { animation-delay: 0.1s; }
+        .shape:nth-child(2) { animation-delay: 0.3s; }
+        .shape:nth-child(3) { animation-delay: 0.5s; }
+        .shape:nth-child(4) { animation-delay: 0.7s; }
+        .shape:nth-child(5) { animation-delay: 0.9s; }
+        .shape:nth-child(6) { animation-delay: 1.1s; }
+        .shape:nth-child(7) { animation-delay: 1.3s; }
+        .shape:nth-child(8) { animation-delay: 1.5s; }
 
-        @keyframes flowerAppear {
-            0% { opacity: 0; transform: translateY(20px) scale(0.5); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes shapePop {
+            0% { opacity: 0; transform: scale(0) rotate(-10deg); }
+            70% { transform: scale(1.1) rotate(5deg); }
+            100% { opacity: 1; transform: scale(1) rotate(0deg); }
         }
 
-        @keyframes flowerWave {
-            0% { transform: rotate(-5deg); }
-            100% { transform: rotate(5deg); }
-        }
-
-        /* Текст поздравления */
+        /* ТЕКСТ ПОЗДРАВЛЕНИЯ */
         .greeting {
-            font-size: 1.5rem;
-            color: white;
-            text-shadow: 2px 2px 0 #ff5a7a, 3px 3px 0 rgba(0,0,0,0.2);
-            padding: 20px 15px;
-            margin: 20px 0 30px;
-            line-height: 1.7;
+            font-size: 1.4rem;
+            color: #4a2c3a;
+            line-height: 1.8;
+            margin: 25px 0 25px;
+            padding: 10px;
             white-space: pre-line;
-            text-align: center;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            animation: textGlow 3s infinite alternate;
+            font-style: italic;
+            /* НИКАКОГО ФОНА, ТОЛЬКО ТЕКСТ */
             background: none;
             border: none;
-            backdrop-filter: none;
+            box-shadow: none;
         }
 
-        @keyframes textGlow {
-            0% { text-shadow: 2px 2px 0 #ff5a7a, 3px 3px 0 rgba(0,0,0,0.2); }
-            100% { text-shadow: 3px 3px 0 #ff3b5c, 4px 4px 0 rgba(0,0,0,0.3); }
-        }
-
-        /* Гифка */
-        .gif-container {
-            margin: 25px 0 25px;
-            border-radius: 40px;
+        /* КАРТИНКА/ГИФКА */
+        .image-container {
+            margin: 20px 0 20px;
+            border-radius: 30px;
             overflow: hidden;
-            box-shadow: 0 20px 30px -10px rgba(255, 60, 120, 0.5);
-            border: 4px solid rgba(255, 255, 255, 0.8);
-            padding: 8px;
+            border: 3px solid rgba(255,255,255,0.7);
+            padding: 5px;
             background: none;
-            animation: gifPulse 4s infinite ease-in-out;
         }
 
-        @keyframes gifPulse {
-            0% { transform: scale(1); box-shadow: 0 20px 30px -10px rgba(255, 60, 120, 0.5); }
-            50% { transform: scale(1.02); box-shadow: 0 25px 35px -8px rgba(255, 30, 100, 0.7); }
-            100% { transform: scale(1); box-shadow: 0 20px 30px -10px rgba(255, 60, 120, 0.5); }
-        }
-
-        .gif-container img {
+        .image-container img {
             width: 100%;
             height: auto;
-            border-radius: 32px;
+            border-radius: 25px;
             display: block;
         }
 
-        /* Подпись */
+        /* ПОДПИСЬ */
         .signature {
-            margin-top: 30px;
-            font-size: 1.6rem;
-            color: white;
-            text-shadow: 2px 2px 0 #ff4d6d;
+            margin-top: 20px;
+            font-size: 1.3rem;
+            color: #9f5f7a;
             font-style: italic;
-            padding: 10px 20px;
-            display: inline-block;
+            padding: 10px;
+            /* БЕЗ ФОНА */
             background: none;
             border: none;
-            animation: signatureFloat 3s infinite ease-in-out;
         }
 
-        @keyframes signatureFloat {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0); }
-        }
-
-        /* Адаптация для маленьких экранов */
+        /* МАЛЕНЬКИЙ ЭКРАН */
         @media (max-width: 420px) {
-            h1 { font-size: 2.8rem; }
-            .greeting { font-size: 1.3rem; }
-            .flower { font-size: 2.4rem; }
-            .bouquet { gap: 10px; }
+            h1 { font-size: 2.5rem; }
+            .greeting { font-size: 1.2rem; }
+            .shape { font-size: 2rem; }
         }
     </style>
 </head>
@@ -215,17 +184,19 @@
     <div class="content">
         <h1>8 МАРТА</h1>
         
-        <!-- Букет с анимацией появления -->
+        <!-- БУКЕТ ИЗ ПРОСТЫХ ФИГУР (появляются по очереди) -->
         <div class="bouquet">
-            <span class="flower">🌷</span>
-            <span class="flower">🌹</span>
-            <span class="flower">🌸</span>
-            <span class="flower">🌺</span>
-            <span class="flower">🌼</span>
-            <span class="flower">🌻</span>
+            <span class="shape">✦</span>
+            <span class="shape">✧</span>
+            <span class="shape">❀</span>
+            <span class="shape">✿</span>
+            <span class="shape">❁</span>
+            <span class="shape">✾</span>
+            <span class="shape">✽</span>
+            <span class="shape">✼</span>
         </div>
         
-        <!-- Твоё поздравление -->
+        <!-- ТВОЙ ТЕКСТ -->
         <div class="greeting">
             Этомо дүктем — дуга меда,<br>
             Маша!<br>
@@ -235,72 +206,56 @@
             лучшая!
         </div>
 
-        <!-- Гифка -->
-        <div class="gif-container">
-            <img src="https://media.tenor.com/IhGXwIB8R3MAAAAi/cute-rose.gif" alt="Милые цветы">
+        <!-- ГИФКА (замени ссылку если надо) -->
+        <div class="image-container">
+            <img src="https://media.tenor.com/IhGXwIB8R3MAAAAi/cute-rose.gif" alt="цветы">
         </div>
 
-        <!-- Подпись -->
+        <!-- ПОДПИСЬ -->
         <div class="signature">
             ❤️ С любовью ❤️
         </div>
     </div>
 
     <script>
+        // ФУНКЦИЯ ДЛЯ СЕРДЕЧЕК
         function startHearts() {
             const container = document.getElementById('heartsContainer');
             if (!container) return;
             
-            // Красивые символы для сердечек
-            const symbols = ['❤️', '🧡', '💛', '💚', '💙', '💜', '🤍', '♥️', '💖', '💗', '💓', '💕', '💞', '💘'];
+            const symbols = ['❤️', '🧡', '💛', '💚', '💙', '💜', '🤍'];
             
             function createHeart() {
                 const heart = document.createElement('div');
                 heart.className = 'heart';
                 
-                // Случайный символ
                 heart.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-                
-                // Случайная позиция слева
                 heart.style.left = Math.random() * 100 + '%';
                 
-                // Случайный размер
-                const size = 0.8 + Math.random() * 1.8;
+                const size = 0.8 + Math.random() * 1.5;
                 heart.style.fontSize = size + 'rem';
                 
-                // Случайная продолжительность падения
-                const duration = 5 + Math.random() * 7;
+                const duration = 4 + Math.random() * 6;
                 heart.style.animationDuration = duration + 's';
                 
-                // Случайная задержка
-                heart.style.animationDelay = Math.random() * 3 + 's';
-                
-                // Случайная прозрачность
-                heart.style.opacity = 0.3 + Math.random() * 0.4;
+                heart.style.animationDelay = Math.random() * 2 + 's';
                 
                 container.appendChild(heart);
                 
-                // Удаляем сердечко после окончания анимации
                 setTimeout(() => {
-                    if (heart.parentNode) {
-                        heart.remove();
-                    }
+                    heart.remove();
                 }, duration * 1000 + 500);
             }
             
-            // Создаем 20 сердечек сразу для старта
-            for (let i = 0; i < 20; i++) {
-                setTimeout(() => {
-                    createHeart();
-                }, i * 150);
+            // Запускаем
+            for (let i = 0; i < 15; i++) {
+                setTimeout(createHeart, i * 100);
             }
             
-            // Создаем новые сердечки каждые 250мс (непрерывно)
-            setInterval(createHeart, 250);
+            setInterval(createHeart, 300);
         }
 
-        // Запускаем после полной загрузки страницы
-        window.addEventListener('load', startHearts);
+        window.onload = startHearts;
     </script>
 </body>
 </html>
