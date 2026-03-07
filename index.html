@@ -13,7 +13,7 @@
 
         body {
             background: black;
-            font-family: 'Georgia', 'Times New Roman', serif;
+            font-family: 'Pacifico', 'Georgia', 'Times New Roman', cursive;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
@@ -115,16 +115,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 10vh;
+            padding-top: 5vh;
         }
 
-        /* БУКЕТ — стебли перекрываются */
+        /* БУКЕТ — стебли максимально близко, перекрещиваются */
         .bouquet {
             position: relative;
             width: 100%;
-            max-width: 550px;
+            max-width: 600px;
             height: 280px;
-            margin: 20px 0 40px;
+            margin: 10px 0 30px;
             z-index: 30;
         }
 
@@ -136,12 +136,12 @@
             transform-origin: bottom center;
         }
 
-        /* Разное положение, высота и наклон — теперь теснее */
-        .bf1 { left: 10%; bottom: -5px; transform: rotate(-5deg); height: 200px; z-index: 1; }
-        .bf2 { left: 25%; bottom: 15px; transform: rotate(4deg); height: 230px; z-index: 3; }
-        .bf3 { left: 40%; bottom: 0px; transform: rotate(-3deg); height: 210px; z-index: 4; }
-        .bf4 { left: 55%; bottom: 20px; transform: rotate(6deg); height: 220px; z-index: 2; }
-        .bf5 { left: 70%; bottom: -10px; transform: rotate(-7deg); height: 190px; z-index: 1; }
+        /* Цветы расположены очень близко, почти вплотную */
+        .bf1 { left: 5%; bottom: -10px; transform: rotate(-6deg); height: 200px; z-index: 1; }
+        .bf2 { left: 18%; bottom: 15px; transform: rotate(5deg); height: 230px; z-index: 3; }
+        .bf3 { left: 32%; bottom: 0px; transform: rotate(-4deg); height: 220px; z-index: 4; }
+        .bf4 { left: 46%; bottom: 20px; transform: rotate(7deg); height: 210px; z-index: 2; }
+        .bf5 { left: 60%; bottom: -5px; transform: rotate(-7deg); height: 190px; z-index: 1; }
 
         /* Стебель */
         .bouquet-stem {
@@ -165,7 +165,7 @@
         /* Сердцевина */
         .bouquet-center {
             position: absolute;
-            bottom: calc(100% - 25px); /* чуть выше стебля */
+            bottom: calc(100% - 25px);
             left: 50%;
             transform: translate(-50%, 0) scale(0);
             width: 28px;
@@ -183,10 +183,10 @@
             100% { transform: translate(-50%, 0) scale(1); }
         }
 
-        /* Лепестки — теперь вокруг сердцевины */
+        /* Лепестки */
         .petal {
             position: absolute;
-            bottom: calc(100% - 25px); /* центр цветка */
+            bottom: calc(100% - 25px);
             left: 50%;
             width: 22px;
             height: 32px;
@@ -196,7 +196,7 @@
             opacity: 0;
             animation: petalPop 0.6s ease-out forwards;
             z-index: 4;
-            transform: translate(-50%, 0) rotate(0deg) translateX(18px); /* базовое смещение будет переопределено в style */
+            transform: translate(-50%, 0) rotate(0deg) translateX(0);
         }
 
         @keyframes petalPop {
@@ -205,89 +205,33 @@
             100% { opacity: 1; transform: translate(-50%, 0) rotate(var(--rot)) translateX(18px) scale(1); }
         }
 
-        /* ЦЕНТРАЛЬНЫЙ БОЛЬШОЙ ЦВЕТОК */
-        .big-flower {
-            position: relative;
-            width: 85vw;
-            max-width: 600px;
-            aspect-ratio: 1/1;
-            margin: 30px auto 50px;
-            z-index: 25;
-            opacity: 0;
-            transform: scale(0);
-            animation: bigFlowerAppear 3s ease-out forwards;
-            animation-delay: 3.5s;
-        }
-
-        @keyframes bigFlowerAppear {
-            0% { opacity: 0; transform: scale(0) rotate(0deg); }
-            30% { opacity: 1; transform: scale(0.7) rotate(120deg); }
-            60% { opacity: 1; transform: scale(1.15) rotate(240deg); }
-            80% { opacity: 1; transform: scale(0.95) rotate(300deg); }
-            100% { opacity: 1; transform: scale(1) rotate(360deg); }
-        }
-
-        /* Лепестки большого цветка (8 шт, маленькие) */
-        .big-petal {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 22%;
-            height: 32%;
-            background: radial-gradient(ellipse at 50% 30%, #f9b8c4, #f06292);
-            border-radius: 50% 50% 30% 30%;
-            transform-origin: 50% 100%;
-            box-shadow: 0 5px 15px rgba(240, 98, 146, 0.5);
-        }
-
-        .big-petal1 { transform: translate(-50%, -100%) rotate(0deg); }
-        .big-petal2 { transform: translate(-50%, -100%) rotate(45deg); }
-        .big-petal3 { transform: translate(-50%, -100%) rotate(90deg); }
-        .big-petal4 { transform: translate(-50%, -100%) rotate(135deg); }
-        .big-petal5 { transform: translate(-50%, -100%) rotate(180deg); }
-        .big-petal6 { transform: translate(-50%, -100%) rotate(225deg); }
-        .big-petal7 { transform: translate(-50%, -100%) rotate(270deg); }
-        .big-petal8 { transform: translate(-50%, -100%) rotate(315deg); }
-
-        /* Сердцевина большого цветка с текстом */
-        .big-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 45%;
-            height: 45%;
-            background: white;
-            border-radius: 50%;
-            box-shadow: inset 0 0 25px #f8bbd0, 0 0 45px white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* БЛОК С ТЕКСТОМ (под букетом) */
+        .message {
+            width: 90%;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(3px);
+            border-radius: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-family: 'Pacifico', 'Georgia', cursive;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #4a2c3a;
             text-align: center;
-            font-size: 2rem;
-            color: #b3426f;
-            font-weight: bold;
-            line-height: 1.3;
-            padding: 15px;
-            opacity: 0;
-            animation: centerFadeIn 0.8s 5s forwards;
-        }
-
-        @keyframes centerFadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Текст внутри сердцевины */
-        .big-center span {
-            display: block;
             white-space: pre-line;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            font-style: italic;
+            font-weight: 500;
+            letter-spacing: 0.5px;
         }
 
-        /* Картинка под цветком */
+        /* Картинка под сообщением */
         .extra-image {
             width: 80%;
             max-width: 400px;
-            margin: 40px auto;
+            margin: 30px auto;
             background: rgba(255,255,255,0.2);
             border-radius: 30px;
             padding: 20px;
@@ -299,7 +243,7 @@
         }
 
         @media (max-width: 500px) {
-            .big-center { font-size: 1.4rem; }
+            .message { font-size: 1rem; padding: 15px; }
         }
     </style>
 </head>
@@ -309,13 +253,12 @@
 
     <!-- Основной контент -->
     <div class="content">
-        <!-- Букет из 5 цветков -->
+        <!-- Букет из 5 цветков (максимально близко) -->
         <div class="bouquet">
             <!-- Цветок 1 -->
             <div class="bouquet-flower bf1">
                 <div class="bouquet-stem" style="animation-delay: 0.2s;"></div>
                 <div class="bouquet-center" style="animation-delay: 0.7s;"></div>
-                <!-- 5 лепестков с разными углами -->
                 <div class="petal" style="--rot: -30deg; animation-delay: 1.2s;"></div>
                 <div class="petal" style="--rot: 30deg; animation-delay: 1.3s;"></div>
                 <div class="petal" style="--rot: 90deg; animation-delay: 1.4s;"></div>
@@ -364,19 +307,33 @@
             </div>
         </div>
 
-        <!-- Большой центральный цветок с текстом для Даши -->
-        <div class="big-flower">
-            <div class="big-petal big-petal1"></div>
-            <div class="big-petal big-petal2"></div>
-            <div class="big-petal big-petal3"></div>
-            <div class="big-petal big-petal4"></div>
-            <div class="big-petal big-petal5"></div>
-            <div class="big-petal big-petal6"></div>
-            <div class="big-petal big-petal7"></div>
-            <div class="big-petal big-petal8"></div>
-            <div class="big-center">
-                <span>ДАША!!<br>поздравляю тебя с этим прекрасным днём!!<br><br>В этот праздник хотел пожелать тебе много счастья, кучу классных моментов в жизни. Чтобы ты всегда оставалась такой же красивой, неповторимой, умной и привлекательной. Чтобы реже было плохое настроение и меньше грустила, чаще радовалась и наслаждалась жизнью!<br><br>Ты невероятная подруга и замечательный человек, я рад тому, что ты присутствуешь в моей жизни, пусть сбываются все мечты и ты шла к своим целям несмотря ни на что<br><br>С праздником, дашуля!</span>
-            </div>
+        <!-- ТЕКСТ ПОЗДРАВЛЕНИЯ (точь-в-точь как на скрине) -->
+        <div class="message">
+            ДАША!!<br>
+            поздравляю тебя<br>
+            с этим<br>
+            прекрасным<br>
+            днём!!<br>
+            <br>
+            В этот праздник<br>
+            хотел пожелать<br>
+            тебе много<br>
+            счастья, кучу<br>
+            классных<br>
+            моментов в<br>
+            жизни. Чтобы ты<br>
+            всегда оставалась<br>
+            такой же<br>
+            красивой,<br>
+            неповторимой,<br>
+            умной и<br>
+            привлекательной.<br>
+            Чтобы реже было<br>
+            плохое<br>
+            настроение и<br>
+            меньше грустила,<br>
+            чаще радовалась<br>
+            и наслаждалась
         </div>
 
         <!-- Место для картинки -->
@@ -413,7 +370,7 @@
 
                 const startX = Math.random() * 100;
                 const scale = 0.6 + Math.random() * 0.8;
-                const speed = 0.7 + Math.random() * 1.0; // немного медленнее
+                const speed = 0.7 + Math.random() * 1.0;
                 const rotateSpeed = 0.04 + Math.random() * 0.08;
                 let direction = Math.random() > 0.5 ? 1 : -1;
                 let rotation = 0;
@@ -455,12 +412,12 @@
                 }, i * 150);
             }
 
-            // 2. Запуск смены фона через 3 секунды (медленнее)
+            // 2. Запуск смены фона через 3 секунды
             setTimeout(() => {
                 document.body.classList.add('circle-bg');
             }, 3000);
 
-            // 3. Приостанавливаем анимации букета до момента смены фона (чтобы они стартовали позже)
+            // 3. Приостанавливаем анимации букета до момента смены фона
             const style = document.createElement('style');
             style.innerHTML = `
                 .bouquet-stem, .bouquet-center, .petal {
@@ -470,8 +427,8 @@
             document.head.appendChild(style);
 
             setTimeout(() => {
-                style.innerHTML = ''; // снимаем паузу
-            }, 3200); // чуть позже начала смены фона
+                style.innerHTML = '';
+            }, 3200);
         })();
     </script>
 </body>
