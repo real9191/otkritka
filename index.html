@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>.</title>
+    <title>С 8 Марта, Даша!</title>
     <style>
         * {
             margin: 0;
@@ -115,16 +115,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 5vh;
+            padding-top: 2vh;
         }
 
         /* БУКЕТ — стебли максимально близко, перекрещиваются */
         .bouquet {
             position: relative;
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             height: 280px;
-            margin: 10px 0 30px;
+            margin: 5px 0 20px;
             z-index: 30;
         }
 
@@ -136,12 +136,12 @@
             transform-origin: bottom center;
         }
 
-        /* Цветы расположены очень близко, почти вплотную */
-        .bf1 { left: 5%; bottom: -10px; transform: rotate(-6deg); height: 200px; z-index: 1; }
-        .bf2 { left: 18%; bottom: 15px; transform: rotate(5deg); height: 230px; z-index: 3; }
-        .bf3 { left: 32%; bottom: 0px; transform: rotate(-4deg); height: 220px; z-index: 4; }
-        .bf4 { left: 46%; bottom: 20px; transform: rotate(7deg); height: 210px; z-index: 2; }
-        .bf5 { left: 60%; bottom: -5px; transform: rotate(-7deg); height: 190px; z-index: 1; }
+        /* Экстремально близкое расположение */
+        .bf1 { left: 0%; bottom: -12px; transform: rotate(-7deg); height: 200px; z-index: 1; }
+        .bf2 { left: 12%; bottom: 18px; transform: rotate(6deg); height: 230px; z-index: 3; }
+        .bf3 { left: 24%; bottom: -5px; transform: rotate(-5deg); height: 220px; z-index: 4; }
+        .bf4 { left: 36%; bottom: 22px; transform: rotate(8deg); height: 210px; z-index: 2; }
+        .bf5 { left: 48%; bottom: -8px; transform: rotate(-8deg); height: 190px; z-index: 1; }
 
         /* Стебель */
         .bouquet-stem {
@@ -205,33 +205,34 @@
             100% { opacity: 1; transform: translate(-50%, 0) rotate(var(--rot)) translateX(18px) scale(1); }
         }
 
-        /* БЛОК С ТЕКСТОМ (под букетом) */
+        /* БЛОК С ТЕКСТОМ — компактный, широкий */
         .message {
-            width: 90%;
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(3px);
-            border-radius: 40px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 98%;
+            max-width: 600px;
+            margin: 10px auto;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(4px);
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
             font-family: 'Pacifico', 'Georgia', cursive;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #4a2c3a;
-            text-align: center;
-            white-space: pre-line;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            font-size: 1.2rem;
+            line-height: 1.3; /* компактнее */
+            color: #2d1b24;
+            text-align: left;
+            white-space: normal;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
             font-style: italic;
             font-weight: 500;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
+            word-wrap: break-word;
         }
 
         /* Картинка под сообщением */
         .extra-image {
             width: 80%;
             max-width: 400px;
-            margin: 30px auto;
+            margin: 20px auto 30px;
             background: rgba(255,255,255,0.2);
             border-radius: 30px;
             padding: 20px;
@@ -243,7 +244,7 @@
         }
 
         @media (max-width: 500px) {
-            .message { font-size: 1rem; padding: 15px; }
+            .message { font-size: 1rem; padding: 12px; }
         }
     </style>
 </head>
@@ -253,7 +254,7 @@
 
     <!-- Основной контент -->
     <div class="content">
-        <!-- Букет из 5 цветков (максимально близко) -->
+        <!-- Букет из 5 цветков (максимальная близость) -->
         <div class="bouquet">
             <!-- Цветок 1 -->
             <div class="bouquet-flower bf1">
@@ -307,33 +308,15 @@
             </div>
         </div>
 
-        <!-- ТЕКСТ ПОЗДРАВЛЕНИЯ (точь-в-точь как на скрине) -->
+        <!-- ТЕКСТ ПОЗДРАВЛЕНИЯ (широкий, компактный, полный) -->
         <div class="message">
-            ДАША!!<br>
-            поздравляю тебя<br>
-            с этим<br>
-            прекрасным<br>
-            днём!!<br>
-            <br>
-            В этот праздник<br>
-            хотел пожелать<br>
-            тебе много<br>
-            счастья, кучу<br>
-            классных<br>
-            моментов в<br>
-            жизни. Чтобы ты<br>
-            всегда оставалась<br>
-            такой же<br>
-            красивой,<br>
-            неповторимой,<br>
-            умной и<br>
-            привлекательной.<br>
-            Чтобы реже было<br>
-            плохое<br>
-            настроение и<br>
-            меньше грустила,<br>
-            чаще радовалась<br>
-            и наслаждалась
+            ДАША!! поздравляю тебя с этим прекрасным днём!!<br>
+            В этот праздник хотел пожелать тебе много счастья, кучу классных моментов в жизни.<br>
+            Чтобы ты всегда оставалась такой же красивой, неповторимой, умной и привлекательной.<br>
+            Чтобы реже было плохое настроение и меньше грустила, чаще радовалась и наслаждалась жизнью!<br>
+            Ты невероятная подруга и замечательный человек, я рад тому, что ты присутствуешь в моей жизни,<br>
+            пусть сбываются все мечты и ты шла к своим целям несмотря ни на что<br>
+            С праздником, дашуля!
         </div>
 
         <!-- Место для картинки -->
