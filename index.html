@@ -16,11 +16,27 @@
             background: black;
             position: relative;
             overflow: hidden;
-            transition: background 2s ease-in-out;
         }
 
-        body.soft-bg {
-            background: linear-gradient(135deg, #fbc2c2 0%, #f8e0e0 100%);
+        /* ПСЕВДОЭЛЕМЕНТ ДЛЯ ПЛАВНОЙ СМЕНЫ ФОНА (КРУГ) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, #fbc2c2 0%, #f8e0e0 100%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            pointer-events: none;
+            transition: width 1.5s ease-out, height 1.5s ease-out;
+        }
+
+        body.circle-bg::before {
+            width: 300vmax;
+            height: 300vmax;
         }
 
         /* КОНТЕЙНЕР ДЛЯ ПАДАЮЩИХ ЦВЕТОЧКОВ (задний план) */
@@ -41,7 +57,7 @@
             height: 40px;
             top: -50px;
             transform-origin: center center;
-            opacity: 0.4; /* Менее яркие */
+            opacity: 0.35;
         }
 
         .flower-particle::before {
@@ -82,7 +98,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
-            width: 150px;
+            width: 200px;
             height: 200px;
             z-index: 10;
             pointer-events: none;
@@ -113,59 +129,61 @@
             }
         }
 
-        /* СТЕБЕЛЬ ЦЕНТРАЛЬНОГО ЦВЕТКА */
-        .center-flower .stem {
+        /* ЛЕПЕСТКИ */
+        .petal {
             position: absolute;
-            bottom: 0;
-            left: 74px;
-            width: 4px;
-            height: 120px;
-            background: linear-gradient(to bottom, #7cfc00, #32cd32);
-            border-radius: 2px;
-            box-shadow: 0 0 15px #7cfc00;
+            width: 60px;
+            height: 100px;
+            background: radial-gradient(ellipse at 50% 30%, #ffb6c1, #ff69b4 70%);
+            border-radius: 50% / 40% 40% 60% 60%;
+            top: 50%;
+            left: 50%;
+            transform-origin: 50% 100%;
+            box-shadow: 0 0 15px #ff99cc;
         }
 
-        /* ЦВЕТОК ЦЕНТРАЛЬНЫЙ */
-        .center-flower .blossom {
+        /* 8 лепестков */
+        .petal1 { transform: translate(-50%, -100%) rotate(0deg); }
+        .petal2 { transform: translate(-50%, -100%) rotate(45deg); }
+        .petal3 { transform: translate(-50%, -100%) rotate(90deg); }
+        .petal4 { transform: translate(-50%, -100%) rotate(135deg); }
+        .petal5 { transform: translate(-50%, -100%) rotate(180deg); }
+        .petal6 { transform: translate(-50%, -100%) rotate(225deg); }
+        .petal7 { transform: translate(-50%, -100%) rotate(270deg); }
+        .petal8 { transform: translate(-50%, -100%) rotate(315deg); }
+
+        /* ЦЕНТР ЦВЕТКА (место для текста) */
+        .center-circle {
             position: absolute;
-            top: 0;
-            left: 50px;
-            width: 50px;
-            height: 50px;
-            background: #ffb6c1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: white;
             border-radius: 50%;
-            box-shadow: 
-                0 0 0 4px #ff69b4,
-                25px 12px 0 -4px #ffb6c1,
-                -25px 12px 0 -4px #ffb6c1,
-                12px 25px 0 -4px #ffb6c1,
-                -12px 25px 0 -4px #ffb6c1,
-                20px -8px 0 -4px #ffb6c1,
-                -20px -8px 0 -4px #ffb6c1,
-                0 0 25px #ff99cc;
+            box-shadow: inset 0 0 10px #ffb6c1, 0 0 20px white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b3426f;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.2;
+            padding: 5px;
+            opacity: 0;
+            animation: centerAppear 0.5s 2.2s forwards;
         }
 
-        /* ЛИСТОЧКИ */
-        .center-flower .leaf {
-            position: absolute;
-            width: 25px;
-            height: 12px;
-            background: #7cfc00;
-            border-radius: 50% / 100% 100% 0 0;
-            opacity: 0.7;
-            box-shadow: 0 0 10px #7cfc00;
+        @keyframes centerAppear {
+            to { opacity: 1; }
         }
 
-        .center-flower .leaf-left {
-            bottom: 40px;
-            left: 60px;
-            transform: rotate(-30deg);
-        }
-
-        .center-flower .leaf-right {
-            bottom: 40px;
-            right: 60px;
-            transform: rotate(30deg);
+        /* ТЕКСТ ВНУТРИ ЦВЕТКА (пока просто пример) */
+        .center-circle span {
+            display: block;
+            font-family: 'Georgia', serif;
         }
     </style>
 </head>
@@ -175,23 +193,33 @@
 
     <!-- ЦЕНТРАЛЬНЫЙ ЦВЕТОК -->
     <div class="center-flower" id="centerFlower">
-        <div class="stem"></div>
-        <div class="blossom"></div>
-        <div class="leaf leaf-left"></div>
-        <div class="leaf leaf-right"></div>
+        <!-- ЛЕПЕСТКИ -->
+        <div class="petal petal1"></div>
+        <div class="petal petal2"></div>
+        <div class="petal petal3"></div>
+        <div class="petal petal4"></div>
+        <div class="petal petal5"></div>
+        <div class="petal petal6"></div>
+        <div class="petal petal7"></div>
+        <div class="petal petal8"></div>
+
+        <!-- ЦЕНТР ДЛЯ ТЕКСТА -->
+        <div class="center-circle" id="flowerCenter">
+            <span>ПОЗДРАВЛЕНИЕ</span>
+        </div>
     </div>
 
     <script>
-        // ЗАПУСКАЕМ ПАДАЮЩИЕ ЦВЕТОЧКИ
+        // ЗАПУСКАЕМ ПАДАЮЩИЕ ЦВЕТОЧКИ (чуть больше)
         function startFlowers() {
             const container = document.getElementById('flowersContainer');
             if (!container) return;
 
-            // СОЗДАЁМ 15 ПРИГЛУШЁННЫХ ЦВЕТОЧКОВ
-            for (let i = 0; i < 15; i++) {
+            // 25 цветочков
+            for (let i = 0; i < 25; i++) {
                 setTimeout(() => {
                     createFlower();
-                }, i * 200);
+                }, i * 150); // интервал чуть меньше, чтобы чаще
             }
 
             function createFlower() {
@@ -204,7 +232,7 @@
                 
                 container.appendChild(flower);
                 
-                let posY = -50 - Math.random() * 300;
+                let posY = -50 - Math.random() * 400; // разброс по высоте
                 let rotation = 0;
                 let rotationSpeed = 0.15 + Math.random() * 0.25;
                 let direction = Math.random() > 0.5 ? 1 : -1;
@@ -229,7 +257,7 @@
                     if (posY < window.innerHeight + 50) {
                         requestAnimationFrame(fall);
                     } else {
-                        posY = -50 - Math.random() * 200;
+                        posY = -50 - Math.random() * 300;
                         flower.style.left = (5 + Math.random() * 90) + '%';
                         requestAnimationFrame(fall);
                     }
@@ -244,12 +272,12 @@
             const centerFlower = document.getElementById('centerFlower');
             centerFlower.classList.add('show');
             
-            // КОГДА АНИМАЦИЯ ЗАКАНЧИВАЕТСЯ (2.5 секунды) - МЕНЯЕМ ФОН
+            // ЧЕРЕЗ 2.5 СЕК (КОГДА ЦВЕТОК ПЕРЕСТАЕТ КРУТИТЬСЯ) ЗАПУСКАЕМ ПЕРЕХОД ФОНА
             setTimeout(() => {
-                document.body.classList.add('soft-bg');
-            }, 2500); // Ждём окончания анимации цветка
+                document.body.classList.add('circle-bg');
+            }, 2500);
             
-        }, 3000); // 3 секунды до появления
+        }, 3000);
 
         window.onload = startFlowers;
     </script>
