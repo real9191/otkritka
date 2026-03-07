@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>.</title>
+    <title>С 8 Марта, Даша!</title>
     <style>
         * {
             margin: 0;
@@ -40,7 +40,7 @@
             height: 300vmax;
         }
 
-        /* Падающие цветочки (задний план) */
+        /* Падающие цветочки */
         .falling-flowers {
             position: fixed;
             top: 0;
@@ -107,18 +107,7 @@
             transform: rotate(15deg);
         }
 
-        /* Контент (скроллится) */
-        .content {
-            position: relative;
-            z-index: 20;
-            min-height: 200vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 20vh;
-        }
-
-        /* Декоративные статичные цветочки */
+        /* Декоративные статичные цветочки (теперь их 7) */
         .deco-flower {
             position: absolute;
             font-size: 2rem;
@@ -126,10 +115,25 @@
             pointer-events: none;
         }
 
-        .deco1 { top: 15%; left: 5%; transform: rotate(-10deg); }
-        .deco2 { top: 25%; right: 5%; transform: rotate(15deg); }
-        .deco3 { bottom: 30%; left: 10%; transform: rotate(5deg); }
-        .deco4 { bottom: 40%; right: 10%; transform: rotate(-5deg); }
+        .deco1 { top: 5%; left: 5%; transform: rotate(-10deg); }
+        .deco2 { top: 8%; right: 8%; transform: rotate(15deg); }
+        .deco3 { top: 12%; left: 50%; transform: translateX(-50%) rotate(5deg); }
+        .deco4 { top: 15%; left: 20%; transform: rotate(-5deg); }
+        .deco5 { top: 7%; left: 70%; transform: rotate(10deg); }
+        .deco6 { top: 18%; right: 20%; transform: rotate(-8deg); }
+        .deco7 { top: 3%; left: 85%; transform: rotate(12deg); }
+
+        /* Контент */
+        .content {
+            position: relative;
+            z-index: 20;
+            min-height: 100vh; /* было 200vh, убрал лишнее снизу */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* центр по вертикали */
+            padding: 10vh 0; /* отступы сверху/снизу */
+        }
 
         /* Текст */
         .message {
@@ -164,20 +168,21 @@
             width: 80%;
             max-width: 400px;
             margin: 20px auto 30px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 30px;
-            padding: 20px;
-            text-align: center;
-            color: white;
-            font-size: 2rem;
-            backdrop-filter: blur(2px);
-            border: 2px dashed white;
+            /* фон и бордер убраны, теперь это просто контейнер для картинки */
             opacity: 0;
             transition: opacity 1.2s ease;
         }
 
         .extra-image.visible {
             opacity: 1;
+        }
+
+        .extra-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 30px;
+            display: block;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
         @media (max-width: 500px) {
@@ -189,11 +194,14 @@
     <!-- Падающие цветочки -->
     <div class="falling-flowers" id="fallingFlowers"></div>
 
-    <!-- Статичные декоративные цветочки -->
+    <!-- Статичные декоративные цветочки (теперь 7 штук) -->
     <div class="deco-flower deco1">🌸</div>
     <div class="deco-flower deco2">🌼</div>
     <div class="deco-flower deco3">🌺</div>
     <div class="deco-flower deco4">🌷</div>
+    <div class="deco-flower deco5">🌻</div>
+    <div class="deco-flower deco6">🌹</div>
+    <div class="deco-flower deco7">🌸</div>
 
     <!-- Основной контент -->
     <div class="content">
@@ -206,15 +214,15 @@
             Ты невероятная подруга и замечательный человек...
         </div>
 
-        <!-- Место для картинки -->
+        <!-- Место для картинки (теперь пустой контейнер, куда можно вставить <img>) -->
         <div class="extra-image" id="extraImage">
-            🌸 котик с букетом 🌸
+            <!-- СЮДА ВСТАВИТЬ ТЕГ <img> -->
         </div>
     </div>
 
     <script>
         (function() {
-            // Падающие цветочки
+            // Падающие цветочки (как раньше)
             const fallingContainer = document.getElementById('fallingFlowers');
             const fallingCount = 20;
 
