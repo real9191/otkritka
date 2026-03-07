@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>С 8 Марта!</title>
     <style>
         * {
@@ -12,13 +12,15 @@
         }
 
         body {
-            min-height: 100vh;
             background: black;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            min-height: 100vh;
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            transition: background 1s ease;
         }
 
-        /* ПСЕВДОЭЛЕМЕНТ ДЛЯ ПЛАВНОЙ СМЕНЫ ФОНА (КРУГ) */
+        /* Псевдоэлемент для плавной смены фона (круг от центра) */
         body::before {
             content: '';
             position: fixed;
@@ -26,12 +28,12 @@
             left: 50%;
             width: 0;
             height: 0;
-            background: radial-gradient(circle, #fbc2c2 0%, #f8e0e0 100%);
+            background: radial-gradient(circle at 30% 30%, #fbc2c2, #f8e0e0);
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            z-index: 5;
+            z-index: 2;
             pointer-events: none;
-            transition: width 1.5s ease-out, height 1.5s ease-out;
+            transition: width 1.8s cubic-bezier(0.4, 0, 0.2, 1), height 1.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body.circle-bg::before {
@@ -39,210 +41,393 @@
             height: 300vmax;
         }
 
-        /* КОНТЕЙНЕР ДЛЯ ПАДАЮЩИХ ЦВЕТОЧКОВ (задний план) */
-        .flowers-container {
+        /* Падающие цветочки (задний план) */
+        .falling-flowers {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 5;
+            overflow: hidden;
         }
 
-        /* ПАДАЮЩИЙ ЦВЕТОЧЕК (приглушённый) */
-        .flower-particle {
+        .falling-flower {
             position: absolute;
             width: 30px;
-            height: 40px;
-            top: -50px;
-            transform-origin: center center;
-            opacity: 0.35;
+            height: 50px;
+            top: -60px;
+            opacity: 0.4;
+            filter: blur(0.3px);
         }
 
-        .flower-particle::before {
-            content: '';
+        /* Стебель */
+        .falling-flower .stem {
             position: absolute;
             bottom: 0;
             left: 14px;
             width: 2px;
-            height: 30px;
-            background: linear-gradient(to bottom, #90ee90, #32cd32);
+            height: 35px;
+            background: linear-gradient(to top, #3a7d3a, #6a9e6a);
             border-radius: 1px;
-            box-shadow: 0 0 4px #90ee90;
-            opacity: 0.5;
         }
 
-        .flower-particle::after {
-            content: '';
+        /* Цветок (лепестки) */
+        .falling-flower .blossom {
             position: absolute;
             top: 0;
             left: 8px;
-            width: 14px;
-            height: 14px;
-            background: #ffb6c1;
+            width: 16px;
+            height: 16px;
+            background: #d96c9e;
             border-radius: 50%;
             box-shadow: 
-                0 0 0 2px #ff69b4,
-                8px 4px 0 -2px #ffb6c1,
-                -8px 4px 0 -2px #ffb6c1,
-                4px 8px 0 -2px #ffb6c1,
-                -4px 8px 0 -2px #ffb6c1,
-                0 0 8px #ff99cc;
-            opacity: 0.6;
+                0 0 0 2px rgba(220, 90, 140, 0.8),
+                8px 4px 0 -2px #e89bbf,
+                -8px 4px 0 -2px #e89bbf,
+                4px 8px 0 -2px #e89bbf,
+                -4px 8px 0 -2px #e89bbf;
         }
 
-        /* ЦЕНТРАЛЬНЫЙ ЦВЕТОК (передний план) */
-        .center-flower {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 200px;
+        /* Листочки на стебле */
+        .falling-flower .leaf {
+            position: absolute;
+            width: 8px;
+            height: 4px;
+            background: #6a9e6a;
+            border-radius: 50% 0 50% 0;
+            transform-origin: left center;
+        }
+
+        .falling-flower .leaf1 {
+            bottom: 18px;
+            left: 10px;
+            transform: rotate(-20deg);
+        }
+
+        .falling-flower .leaf2 {
+            bottom: 8px;
+            left: 14px;
+            transform: rotate(15deg);
+        }
+
+        /* Контент (то, что будет скроллиться) */
+        .content {
+            position: relative;
+            z-index: 20;
+            min-height: 200vh; /* чтобы можно было скроллить вниз */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 15vh;
+        }
+
+        /* БУКЕТ (5 цветков сверху) */
+        .bouquet {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
             height: 200px;
-            z-index: 10;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
+            margin-bottom: 20px;
+            z-index: 30;
         }
 
-        .center-flower.show {
-            opacity: 1;
-            animation: flowerAppear 2.5s ease-out forwards;
+        .bouquet-flower {
+            position: absolute;
+            bottom: 0;
+            width: 70px;
+            height: 170px;
+            transform-origin: bottom center;
         }
 
-        @keyframes flowerAppear {
-            0% {
-                transform: translate(-50%, -50%) scale(0) rotate(0deg);
-            }
-            30% {
-                transform: translate(-50%, -50%) scale(0.6) rotate(180deg);
-            }
-            60% {
-                transform: translate(-50%, -50%) scale(1.1) rotate(300deg);
-            }
-            80% {
-                transform: translate(-50%, -50%) scale(0.95) rotate(340deg);
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1) rotate(360deg);
-            }
+        /* Индивидуальное положение и наклон каждого цветка */
+        .bf1 { left: 5%; transform: rotate(-5deg); }
+        .bf2 { left: 22%; transform: rotate(2deg); }
+        .bf3 { left: 40%; transform: rotate(-3deg); }
+        .bf4 { left: 60%; transform: rotate(4deg); }
+        .bf5 { left: 80%; transform: rotate(-6deg); }
+
+        /* Стебель */
+        .bouquet-stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            height: 0; /* будет расти */
+            background: linear-gradient(to top, #2e7d32, #6a9e6a);
+            transform: translateX(-50%);
+            border-radius: 2px;
+            box-shadow: 0 0 8px #a5d6a5;
+            animation: growStem 0.8s ease-out forwards;
         }
 
-        /* ЛЕПЕСТКИ */
+        @keyframes growStem {
+            0% { height: 0; }
+            100% { height: 120px; }
+        }
+
+        /* Сердцевина */
+        .bouquet-center {
+            position: absolute;
+            bottom: 110px; /* зависит от высоты стебля */
+            left: 50%;
+            transform: translate(-50%, 0) scale(0);
+            width: 24px;
+            height: 24px;
+            background: #ffcc80;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px #ffb74d, 0 0 12px #ffb74d;
+            animation: popCenter 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popCenter {
+            0% { transform: translate(-50%, 0) scale(0); }
+            70% { transform: translate(-50%, 0) scale(1.2); }
+            100% { transform: translate(-50%, 0) scale(1); }
+        }
+
+        /* Лепестки */
         .petal {
             position: absolute;
-            width: 60px;
-            height: 100px;
-            background: radial-gradient(ellipse at 50% 30%, #ffb6c1, #ff69b4 70%);
-            border-radius: 50% / 40% 40% 60% 60%;
-            top: 50%;
+            bottom: 110px; /* центр цветка */
             left: 50%;
-            transform-origin: 50% 100%;
-            box-shadow: 0 0 15px #ff99cc;
+            width: 16px;
+            height: 28px;
+            background: radial-gradient(ellipse at 50% 30%, #f8bbd0, #f48fb1);
+            border-radius: 50% 50% 0 0;
+            transform-origin: bottom center;
+            opacity: 0;
+            animation: petalPop 0.4s ease-out forwards;
         }
 
-        /* 8 лепестков */
-        .petal1 { transform: translate(-50%, -100%) rotate(0deg); }
-        .petal2 { transform: translate(-50%, -100%) rotate(45deg); }
-        .petal3 { transform: translate(-50%, -100%) rotate(90deg); }
-        .petal4 { transform: translate(-50%, -100%) rotate(135deg); }
-        .petal5 { transform: translate(-50%, -100%) rotate(180deg); }
-        .petal6 { transform: translate(-50%, -100%) rotate(225deg); }
-        .petal7 { transform: translate(-50%, -100%) rotate(270deg); }
-        .petal8 { transform: translate(-50%, -100%) rotate(315deg); }
+        @keyframes petalPop {
+            0% { opacity: 0; transform: rotate(0deg) scale(0); }
+            70% { opacity: 1; transform: rotate(var(--rot)) scale(1.2); }
+            100% { opacity: 1; transform: rotate(var(--rot)) scale(1); }
+        }
 
-        /* ЦЕНТР ЦВЕТКА (место для текста) */
-        .center-circle {
+        /* ЦЕНТРАЛЬНЫЙ БОЛЬШОЙ ЦВЕТОК */
+        .big-flower {
+            position: relative;
+            width: 90vw;
+            max-width: 600px;
+            aspect-ratio: 1/1.2;
+            margin: 0 auto 50px;
+            z-index: 25;
+            opacity: 0;
+            transform: scale(0);
+            animation: bigFlowerAppear 2.2s ease-out forwards;
+            animation-delay: 2.8s; /* появляется после падающих цветов */
+        }
+
+        @keyframes bigFlowerAppear {
+            0% { opacity: 0; transform: scale(0) rotate(0deg); }
+            30% { opacity: 1; transform: scale(0.7) rotate(120deg); }
+            60% { opacity: 1; transform: scale(1.1) rotate(240deg); }
+            80% { opacity: 1; transform: scale(0.95) rotate(300deg); }
+            100% { opacity: 1; transform: scale(1) rotate(360deg); }
+        }
+
+        /* Лепестки большого цветка (8 штук) */
+        .big-petal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40%;
+            height: 50%;
+            background: radial-gradient(ellipse at 50% 30%, #f9b8c4, #f06292);
+            border-radius: 50% 50% 30% 30%;
+            transform-origin: 50% 100%;
+            box-shadow: 0 5px 15px rgba(240, 98, 146, 0.5);
+        }
+
+        .big-petal1 { transform: translate(-50%, -100%) rotate(0deg); }
+        .big-petal2 { transform: translate(-50%, -100%) rotate(45deg); }
+        .big-petal3 { transform: translate(-50%, -100%) rotate(90deg); }
+        .big-petal4 { transform: translate(-50%, -100%) rotate(135deg); }
+        .big-petal5 { transform: translate(-50%, -100%) rotate(180deg); }
+        .big-petal6 { transform: translate(-50%, -100%) rotate(225deg); }
+        .big-petal7 { transform: translate(-50%, -100%) rotate(270deg); }
+        .big-petal8 { transform: translate(-50%, -100%) rotate(315deg); }
+
+        /* Центр большого цветка (место для текста) */
+        .big-center {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
+            width: 30%;
+            height: 30%;
             background: white;
             border-radius: 50%;
-            box-shadow: inset 0 0 10px #ffb6c1, 0 0 20px white;
+            box-shadow: inset 0 0 15px #f8bbd0, 0 0 25px white;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #b3426f;
-            font-size: 1.2rem;
-            font-weight: bold;
             text-align: center;
+            font-size: 1.8rem;
+            color: #b3426f;
+            font-weight: bold;
             line-height: 1.2;
-            padding: 5px;
+            padding: 10px;
             opacity: 0;
-            animation: centerAppear 0.5s 2.2s forwards;
+            animation: centerFadeIn 0.6s 4s forwards; /* появится после цветка */
         }
 
-        @keyframes centerAppear {
+        @keyframes centerFadeIn {
             to { opacity: 1; }
         }
 
-        /* ТЕКСТ ВНУТРИ ЦВЕТКА (пока просто пример) */
-        .center-circle span {
-            display: block;
-            font-family: 'Georgia', serif;
+        /* Картинка под цветком (скролл) */
+        .extra-image {
+            width: 80%;
+            max-width: 400px;
+            margin: 40px auto;
+            background: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            backdrop-filter: blur(2px);
+            border: 2px dashed white;
+        }
+
+        /* Адаптация */
+        @media (max-width: 500px) {
+            .big-center { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
-    <!-- КОНТЕЙНЕР ДЛЯ ПАДАЮЩИХ ЦВЕТОЧКОВ -->
-    <div class="flowers-container" id="flowersContainer"></div>
+    <!-- Падающие цветочки (генерируются скриптом) -->
+    <div class="falling-flowers" id="fallingFlowers"></div>
 
-    <!-- ЦЕНТРАЛЬНЫЙ ЦВЕТОК -->
-    <div class="center-flower" id="centerFlower">
-        <!-- ЛЕПЕСТКИ -->
-        <div class="petal petal1"></div>
-        <div class="petal petal2"></div>
-        <div class="petal petal3"></div>
-        <div class="petal petal4"></div>
-        <div class="petal petal5"></div>
-        <div class="petal petal6"></div>
-        <div class="petal petal7"></div>
-        <div class="petal petal8"></div>
+    <!-- Основной контент -->
+    <div class="content">
+        <!-- Букет из 5 цветков -->
+        <div class="bouquet">
+            <!-- Цветок 1 -->
+            <div class="bouquet-flower bf1" id="bf1">
+                <div class="bouquet-stem" style="animation-delay: 0.1s;"></div>
+                <div class="bouquet-center" style="animation-delay: 0.6s;"></div>
+                <!-- Лепестки (5 штук) -->
+                <div class="petal" style="--rot: -45deg; animation-delay: 1.0s;"></div>
+                <div class="petal" style="--rot: 0deg; animation-delay: 1.1s;"></div>
+                <div class="petal" style="--rot: 45deg; animation-delay: 1.2s;"></div>
+                <div class="petal" style="--rot: 90deg; animation-delay: 1.3s;"></div>
+                <div class="petal" style="--rot: 135deg; animation-delay: 1.4s;"></div>
+            </div>
+            <!-- Цветок 2 -->
+            <div class="bouquet-flower bf2" id="bf2">
+                <div class="bouquet-stem" style="animation-delay: 0.2s;"></div>
+                <div class="bouquet-center" style="animation-delay: 0.7s;"></div>
+                <div class="petal" style="--rot: -50deg; animation-delay: 1.1s;"></div>
+                <div class="petal" style="--rot: 5deg; animation-delay: 1.2s;"></div>
+                <div class="petal" style="--rot: 60deg; animation-delay: 1.3s;"></div>
+                <div class="petal" style="--rot: 115deg; animation-delay: 1.4s;"></div>
+                <div class="petal" style="--rot: 170deg; animation-delay: 1.5s;"></div>
+            </div>
+            <!-- Цветок 3 -->
+            <div class="bouquet-flower bf3" id="bf3">
+                <div class="bouquet-stem" style="animation-delay: 0.3s;"></div>
+                <div class="bouquet-center" style="animation-delay: 0.8s;"></div>
+                <div class="petal" style="--rot: -40deg; animation-delay: 1.2s;"></div>
+                <div class="petal" style="--rot: 15deg; animation-delay: 1.3s;"></div>
+                <div class="petal" style="--rot: 70deg; animation-delay: 1.4s;"></div>
+                <div class="petal" style="--rot: 125deg; animation-delay: 1.5s;"></div>
+                <div class="petal" style="--rot: 180deg; animation-delay: 1.6s;"></div>
+            </div>
+            <!-- Цветок 4 -->
+            <div class="bouquet-flower bf4" id="bf4">
+                <div class="bouquet-stem" style="animation-delay: 0.4s;"></div>
+                <div class="bouquet-center" style="animation-delay: 0.9s;"></div>
+                <div class="petal" style="--rot: -30deg; animation-delay: 1.3s;"></div>
+                <div class="petal" style="--rot: 25deg; animation-delay: 1.4s;"></div>
+                <div class="petal" style="--rot: 80deg; animation-delay: 1.5s;"></div>
+                <div class="petal" style="--rot: 135deg; animation-delay: 1.6s;"></div>
+                <div class="petal" style="--rot: 190deg; animation-delay: 1.7s;"></div>
+            </div>
+            <!-- Цветок 5 -->
+            <div class="bouquet-flower bf5" id="bf5">
+                <div class="bouquet-stem" style="animation-delay: 0.5s;"></div>
+                <div class="bouquet-center" style="animation-delay: 1.0s;"></div>
+                <div class="petal" style="--rot: -35deg; animation-delay: 1.4s;"></div>
+                <div class="petal" style="--rot: 20deg; animation-delay: 1.5s;"></div>
+                <div class="petal" style="--rot: 75deg; animation-delay: 1.6s;"></div>
+                <div class="petal" style="--rot: 130deg; animation-delay: 1.7s;"></div>
+                <div class="petal" style="--rot: 185deg; animation-delay: 1.8s;"></div>
+            </div>
+        </div>
 
-        <!-- ЦЕНТР ДЛЯ ТЕКСТА -->
-        <div class="center-circle" id="flowerCenter">
-            <span>ПОЗДРАВЛЕНИЕ</span>
+        <!-- Большой центральный цветок -->
+        <div class="big-flower">
+            <div class="big-petal big-petal1"></div>
+            <div class="big-petal big-petal2"></div>
+            <div class="big-petal big-petal3"></div>
+            <div class="big-petal big-petal4"></div>
+            <div class="big-petal big-petal5"></div>
+            <div class="big-petal big-petal6"></div>
+            <div class="big-petal big-petal7"></div>
+            <div class="big-petal big-petal8"></div>
+            <div class="big-center" id="flowerCenter">
+                С 8 Марта,<br>Маша!
+            </div>
+        </div>
+
+        <!-- Картинка под цветком (скролл) -->
+        <div class="extra-image">
+            🌸 Тут будет<br>красивая картинка 🌸
         </div>
     </div>
 
     <script>
-        // ЗАПУСКАЕМ ПАДАЮЩИЕ ЦВЕТОЧКИ (чуть больше)
-        function startFlowers() {
-            const container = document.getElementById('flowersContainer');
-            if (!container) return;
+        (function() {
+            // 1. Запускаем падающие цветочки (более детальные)
+            const container = document.getElementById('fallingFlowers');
+            const count = 25; // количество
 
-            // 25 цветочков
-            for (let i = 0; i < 25; i++) {
-                setTimeout(() => {
-                    createFlower();
-                }, i * 150); // интервал чуть меньше, чтобы чаще
-            }
+            function createFallingFlower() {
+                const flowerDiv = document.createElement('div');
+                flowerDiv.className = 'falling-flower';
 
-            function createFlower() {
-                const flower = document.createElement('div');
-                flower.className = 'flower-particle';
-                
-                flower.style.left = (5 + Math.random() * 90) + '%';
-                const scale = 0.7 + Math.random() * 0.6;
-                flower.style.transform = `scale(${scale})`;
-                
-                container.appendChild(flower);
-                
-                let posY = -50 - Math.random() * 400; // разброс по высоте
-                let rotation = 0;
-                let rotationSpeed = 0.15 + Math.random() * 0.25;
+                // Стебель
+                const stem = document.createElement('div');
+                stem.className = 'stem';
+                // Цветок
+                const blossom = document.createElement('div');
+                blossom.className = 'blossom';
+                // Листья
+                const leaf1 = document.createElement('div');
+                leaf1.className = 'leaf leaf1';
+                const leaf2 = document.createElement('div');
+                leaf2.className = 'leaf leaf2';
+
+                flowerDiv.appendChild(stem);
+                flowerDiv.appendChild(blossom);
+                flowerDiv.appendChild(leaf1);
+                flowerDiv.appendChild(leaf2);
+
+                container.appendChild(flowerDiv);
+
+                // Случайные параметры
+                const startX = Math.random() * 100; // %
+                const scale = 0.6 + Math.random() * 0.8;
+                const speed = 0.8 + Math.random() * 1.2; // px/кадр
+                const rotateSpeed = 0.05 + Math.random() * 0.1;
                 let direction = Math.random() > 0.5 ? 1 : -1;
-                const speed = 1.2 + Math.random() * 1.3;
-                
-                function fall() {
+                let rotation = 0;
+                let posY = -100 - Math.random() * 200; // разный старт
+
+                flowerDiv.style.left = startX + '%';
+                flowerDiv.style.transform = `scale(${scale})`;
+
+                function animate() {
                     posY += speed;
-                    
-                    rotation += rotationSpeed * direction;
-                    
+                    rotation += rotateSpeed * direction;
+
+                    // Меняем направление наклона
                     if (rotation > 12) {
                         rotation = 12;
                         direction = -1;
@@ -250,36 +435,67 @@
                         rotation = -12;
                         direction = 1;
                     }
-                    
-                    flower.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
-                    flower.style.top = posY + 'px';
-                    
-                    if (posY < window.innerHeight + 50) {
-                        requestAnimationFrame(fall);
+
+                    flowerDiv.style.top = posY + 'px';
+                    flowerDiv.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
+
+                    if (posY < window.innerHeight + 100) {
+                        requestAnimationFrame(animate);
                     } else {
-                        posY = -50 - Math.random() * 300;
-                        flower.style.left = (5 + Math.random() * 90) + '%';
-                        requestAnimationFrame(fall);
+                        // Появился снизу - возвращаем наверх
+                        posY = -100 - Math.random() * 200;
+                        flowerDiv.style.left = (Math.random() * 100) + '%';
+                        requestAnimationFrame(animate);
                     }
                 }
-                
-                requestAnimationFrame(fall);
-            }
-        }
 
-        // ЧЕРЕЗ 3 СЕКУНДЫ ПОКАЗЫВАЕМ ЦЕНТРАЛЬНЫЙ ЦВЕТОК
-        setTimeout(() => {
-            const centerFlower = document.getElementById('centerFlower');
-            centerFlower.classList.add('show');
-            
-            // ЧЕРЕЗ 2.5 СЕК (КОГДА ЦВЕТОК ПЕРЕСТАЕТ КРУТИТЬСЯ) ЗАПУСКАЕМ ПЕРЕХОД ФОНА
+                requestAnimationFrame(animate);
+            }
+
+            // Создаём цветочки с интервалом, чтобы не все сразу
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    createFallingFlower();
+                }, i * 120);
+            }
+
+            // 2. Таймеры для смены фона и запуска анимаций букета
+            // Через 2 секунды после загрузки начинаем расширение круга фона
             setTimeout(() => {
                 document.body.classList.add('circle-bg');
-            }, 2500);
-            
-        }, 3000);
+            }, 2000);
 
-        window.onload = startFlowers;
+            // Букет уже имеет задержки в CSS, но можно добавить класс для старта,
+            // если нужно синхронизировать. Пока оставим как есть (анимации стартуют сразу после загрузки HTML).
+            // Однако стебли начинают расти сразу, но мы хотим, чтобы букет появился после фона?
+            // Поскольку центральный цветок появляется с задержкой 2.8s, а букет может стартовать раньше,
+            // это нормально. Чтобы точно согласовать, можно добавить общую задержку для букета.
+            // Но сейчас букет стартует сразу (0.1s и т.д.), что может быть слишком рано. Перенесём старт анимаций букета с помощью JS.
+            // Сбросим анимации и запустим через таймер.
+            const bouquetFlowers = document.querySelectorAll('.bouquet-flower');
+            // Отключаем временно анимации (удаляем классы или обнуляем?)
+            // Проще: переместим animation из CSS в JS-класс.
+            // Но для простоты оставим как есть, а если нужно позже, можно добавить задержку body.
+
+        })();
+    </script>
+    <!-- Дополнительный скрипт для управления анимациями букета (чтобы они стартовали после появления центра) -->
+    <script>
+        (function() {
+            // Останавливаем анимации букета до нужного момента
+            const style = document.createElement('style');
+            style.innerHTML = `
+                .bouquet-stem, .bouquet-center, .petal {
+                    animation-play-state: paused !important;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Запускаем анимации букета через 2.5 секунды (после начала смены фона)
+            setTimeout(() => {
+                style.innerHTML = ''; // удаляем ограничение
+            }, 2500);
+        })();
     </script>
 </body>
 </html>
