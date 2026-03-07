@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>С 8 Марта, Даша!</title>
+    <title>.</title>
     <style>
         * {
             margin: 0;
@@ -107,32 +107,16 @@
             transform: rotate(15deg);
         }
 
-        /* Декоративные статичные цветочки (теперь их 7) */
-        .deco-flower {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.3;
-            pointer-events: none;
-        }
-
-        .deco1 { top: 5%; left: 5%; transform: rotate(-10deg); }
-        .deco2 { top: 8%; right: 8%; transform: rotate(15deg); }
-        .deco3 { top: 12%; left: 50%; transform: translateX(-50%) rotate(5deg); }
-        .deco4 { top: 15%; left: 20%; transform: rotate(-5deg); }
-        .deco5 { top: 7%; left: 70%; transform: rotate(10deg); }
-        .deco6 { top: 18%; right: 20%; transform: rotate(-8deg); }
-        .deco7 { top: 3%; left: 85%; transform: rotate(12deg); }
-
         /* Контент */
         .content {
             position: relative;
             z-index: 20;
-            min-height: 100vh; /* было 200vh, убрал лишнее снизу */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* центр по вертикали */
-            padding: 10vh 0; /* отступы сверху/снизу */
+            justify-content: center;
+            padding: 10vh 0;
         }
 
         /* Текст */
@@ -168,7 +152,6 @@
             width: 80%;
             max-width: 400px;
             margin: 20px auto 30px;
-            /* фон и бордер убраны, теперь это просто контейнер для картинки */
             opacity: 0;
             transition: opacity 1.2s ease;
         }
@@ -194,15 +177,6 @@
     <!-- Падающие цветочки -->
     <div class="falling-flowers" id="fallingFlowers"></div>
 
-    <!-- Статичные декоративные цветочки (теперь 7 штук) -->
-    <div class="deco-flower deco1">🌸</div>
-    <div class="deco-flower deco2">🌼</div>
-    <div class="deco-flower deco3">🌺</div>
-    <div class="deco-flower deco4">🌷</div>
-    <div class="deco-flower deco5">🌻</div>
-    <div class="deco-flower deco6">🌹</div>
-    <div class="deco-flower deco7">🌸</div>
-
     <!-- Основной контент -->
     <div class="content">
         <!-- ТЕКСТ ПОЗДРАВЛЕНИЯ -->
@@ -214,15 +188,15 @@
             Ты невероятная подруга и замечательный человек...
         </div>
 
-        <!-- Место для картинки (теперь пустой контейнер, куда можно вставить <img>) -->
+        <!-- Картинка по твоей ссылке -->
         <div class="extra-image" id="extraImage">
-            <!-- СЮДА ВСТАВИТЬ ТЕГ <img> -->
+            <img src="https://i.pinimg.com/736x/99/c7/b5/99c7b5c800a4dca193d709ca234a165a.jpg" alt="Котик с букетом">
         </div>
     </div>
 
     <script>
         (function() {
-            // Падающие цветочки (как раньше)
+            // Падающие цветочки
             const fallingContainer = document.getElementById('fallingFlowers');
             const fallingCount = 20;
 
