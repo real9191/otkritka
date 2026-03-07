@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>С 8 Марта, Даша!</title>
+    <title>.</title>
     <style>
         * {
             margin: 0;
@@ -40,7 +40,7 @@
             height: 300vmax;
         }
 
-        /* Падающие цветочки */
+        /* Падающие цветочки (задний план) */
         .falling-flowers {
             position: fixed;
             top: 0;
@@ -107,7 +107,7 @@
             transform: rotate(15deg);
         }
 
-        /* Контент */
+        /* Контент (скроллится) */
         .content {
             position: relative;
             z-index: 20;
@@ -115,96 +115,21 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 2vh;
+            padding-top: 20vh;
         }
 
-        /* БУКЕТ — все стебли из одной точки */
-        .bouquet {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            height: 400px;
-            margin: 0 auto 20px;
-            z-index: 30;
-        }
-
-        .stem-container {
+        /* Декоративные статичные цветочки */
+        .deco-flower {
             position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 400px;  /* достаточно широкая область */
-            height: 400px;
-        }
-
-        .flower {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform-origin: bottom center;
-            width: 100px;
-            height: 300px;  /* максимум для стебля */
+            font-size: 2rem;
+            opacity: 0.3;
             pointer-events: none;
         }
 
-        /* Стебель (простая линия) */
-        .stem-line {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 6px;
-            height: 0;
-            background: linear-gradient(to top, #2e7d32, #6a9e6a);
-            border-radius: 3px;
-            transform-origin: bottom center;
-            box-shadow: 0 0 10px #a5d6a5;
-            animation: growStem 1.2s ease-out forwards;
-        }
-
-        @keyframes growStem {
-            0% { height: 0; }
-            100% { height: var(--stem-length); }
-        }
-
-        /* Сердцевина */
-        .center {
-            position: absolute;
-            width: 36px;
-            height: 36px;
-            background: #ffd966;
-            border-radius: 50%;
-            box-shadow: 0 0 0 5px #ffe599, 0 0 25px #ffd966;
-            transform: translate(-50%, -50%) scale(0);
-            animation: popCenter 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            z-index: 5;
-        }
-
-        @keyframes popCenter {
-            0% { transform: translate(-50%, -50%) scale(0); }
-            70% { transform: translate(-50%, -50%) scale(1.3); }
-            100% { transform: translate(-50%, -50%) scale(1); }
-        }
-
-        /* Лепестки */
-        .petal {
-            position: absolute;
-            width: 22px;
-            height: 28px;
-            background: var(--petal-color, #f9c9d0);
-            border-radius: 60% 40% 50% 50% / 40% 30% 70% 60%;
-            transform-origin: bottom center;
-            opacity: 0;
-            animation: petalPop 0.6s ease-out forwards;
-            z-index: 4;
-            transform: translate(-50%, -50%) rotate(0deg) translateX(0);
-            box-shadow: 0 0 8px currentColor;
-        }
-
-        @keyframes petalPop {
-            0% { opacity: 0; transform: translate(-50%, -50%) rotate(0deg) translateX(0) scale(0); }
-            70% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--rot)) translateX(24px) scale(1.1); }
-            100% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--rot)) translateX(18px) scale(1); }
-        }
+        .deco1 { top: 15%; left: 5%; transform: rotate(-10deg); }
+        .deco2 { top: 25%; right: 5%; transform: rotate(15deg); }
+        .deco3 { bottom: 30%; left: 10%; transform: rotate(5deg); }
+        .deco4 { bottom: 40%; right: 10%; transform: rotate(-5deg); }
 
         /* Текст */
         .message {
@@ -264,13 +189,14 @@
     <!-- Падающие цветочки -->
     <div class="falling-flowers" id="fallingFlowers"></div>
 
+    <!-- Статичные декоративные цветочки -->
+    <div class="deco-flower deco1">🌸</div>
+    <div class="deco-flower deco2">🌼</div>
+    <div class="deco-flower deco3">🌺</div>
+    <div class="deco-flower deco4">🌷</div>
+
     <!-- Основной контент -->
     <div class="content">
-        <!-- Букет -->
-        <div class="bouquet" id="bouquet">
-            <div class="stem-container" id="stemContainer"></div>
-        </div>
-
         <!-- ТЕКСТ ПОЗДРАВЛЕНИЯ -->
         <div class="message" id="greetingMessage">
             ДАША!! поздравляю тебя с этим прекрасным днём!!<br>
@@ -288,9 +214,9 @@
 
     <script>
         (function() {
-            // Падающие цветочки (как раньше)
+            // Падающие цветочки
             const fallingContainer = document.getElementById('fallingFlowers');
-            const fallingCount = 25;
+            const fallingCount = 20;
 
             function createFallingFlower() {
                 const flowerDiv = document.createElement('div');
@@ -356,81 +282,10 @@
                 }, i * 150);
             }
 
-            // --- БУКЕТ (исправленный) ---
-            const stemContainer = document.getElementById('stemContainer');
-            // Углы наклона от вертикали: отрицательные влево, положительные вправо
-            const angles = [-60, -30, 0, 30, 60]; // градусы
-            const lengths = [220, 250, 270, 250, 220]; // длина стебля в пикселях
-            const petalColors = ['#f9c9d0', '#f9d0c9', '#e0c9f9', '#c9e0f9', '#f9e0c9'];
-            const baseDelays = [0.2, 0.3, 0.4, 0.5, 0.6]; // задержка старта стебля
-
-            for (let i = 0; i < 5; i++) {
-                const flowerDiv = document.createElement('div');
-                flowerDiv.className = 'flower';
-                flowerDiv.style.zIndex = i === 2 ? 4 : (i % 2 === 0 ? 1 : 3); // примерное перекрытие
-
-                // Стебель
-                const stem = document.createElement('div');
-                stem.className = 'stem-line';
-                stem.style.setProperty('--stem-length', lengths[i] + 'px');
-                stem.style.transform = `translateX(-50%) rotate(${angles[i]}deg)`;
-                stem.style.animationDelay = baseDelays[i] + 's';
-                flowerDiv.appendChild(stem);
-
-                // Контейнер для головки цветка (сердцевина + лепестки)
-                const head = document.createElement('div');
-                head.style.position = 'absolute';
-                head.style.width = '60px';
-                head.style.height = '60px';
-                head.style.left = '50%';
-                head.style.bottom = '0';
-                head.style.transformOrigin = 'center center';
-
-                // Рассчитываем смещение конца стебля относительно основания
-                const rad = angles[i] * Math.PI / 180;
-                const dx = Math.sin(rad) * lengths[i];
-                const dy = -Math.cos(rad) * lengths[i]; // отрицательное, потому что вверх
-                head.style.transform = `translate(-50%, -50%) translate(${dx}px, ${dy}px)`;
-
-                // Сердцевина
-                const center = document.createElement('div');
-                center.className = 'center';
-                center.style.animationDelay = (baseDelays[i] + 0.8) + 's';
-                head.appendChild(center);
-
-                // Лепестки (7 штук)
-                const basePetalDelay = baseDelays[i] + 1.3;
-                for (let p = 0; p < 7; p++) {
-                    const petal = document.createElement('div');
-                    petal.className = 'petal';
-                    const angleOffset = (p * 360 / 7) + (i * 10); // равномерно + небольшой сдвиг
-                    petal.style.setProperty('--rot', angleOffset + 'deg');
-                    petal.style.animationDelay = (basePetalDelay + p * 0.1) + 's';
-                    petal.style.setProperty('--petal-color', petalColors[i]);
-                    head.appendChild(petal);
-                }
-
-                flowerDiv.appendChild(head);
-                stemContainer.appendChild(flowerDiv);
-            }
-
             // Запуск смены фона через 1 секунду
             setTimeout(() => {
                 document.body.classList.add('circle-bg');
             }, 1000);
-
-            // Пауза анимаций букета до старта круга
-            const style = document.createElement('style');
-            style.innerHTML = `
-                .stem-line, .center, .petal {
-                    animation-play-state: paused !important;
-                }
-            `;
-            document.head.appendChild(style);
-
-            setTimeout(() => {
-                style.innerHTML = '';
-            }, 1100); // чуть позже старта круга
 
             // Показываем текст и картинку после завершения круга
             setTimeout(() => {
