@@ -13,11 +13,129 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #fbc2c2 0%, #f8e0e0 100%);
+            background: black;
+            position: relative;
+            overflow: hidden;  /* чтобы цветочки не создавали полосу прокрутки */
+        }
+
+        /* КОНТЕЙНЕР ДЛЯ ЦВЕТОЧКОВ */
+        .flowers-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;  /* чтобы цветочки не мешали нажимать */
+            z-index: 1;
+        }
+
+        /* САМИ ЦВЕТОЧКИ (НЕ ЭМОДЗИ, А НАРИСОВАННЫЕ) */
+        .flower-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: transparent;
+            top: -10px;
+        }
+
+        /* РИСУЕМ МАЛЕНЬКИЙ ЦВЕТОЧЕК (5 лепестков) */
+        .flower-particle::before,
+        .flower-particle::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 200, 220, 0.9);
+            border-radius: 50%;
+        }
+
+        .flower-particle::before {
+            transform: translateX(-3px) rotate(0deg);
+            box-shadow: 
+                3px 0 0 rgba(255, 180, 200, 0.9),
+                -3px 0 0 rgba(255, 180, 200, 0.9),
+                0 3px 0 rgba(255, 180, 200, 0.9),
+                0 -3px 0 rgba(255, 180, 200, 0.9);
+        }
+
+        .flower-particle::after {
+            transform: translateX(-3px) rotate(45deg);
+            box-shadow: 
+                3px 0 0 rgba(255, 180, 200, 0.9),
+                -3px 0 0 rgba(255, 180, 200, 0.9),
+                0 3px 0 rgba(255, 180, 200, 0.9),
+                0 -3px 0 rgba(255, 180, 200, 0.9);
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
-    <!-- ПОКА ПУСТО -->
+    <div class="flowers-container" id="flowersContainer"></div>
+
+    <script>
+        function startFlowers() {
+            const container = document.getElementById('flowersContainer');
+            if (!container) return;
+            
+            function createFlower() {
+                const flower = document.createElement('div');
+                flower.className = 'flower-particle';
+                
+                // Случайное положение по горизонтали
+                flower.style.left = Math.random() * 100 + '%';
+                
+                // Случайный размер (от 4 до 10 пикселей)
+                const size = 4 + Math.random() * 6;
+                flower.style.width = size + 'px';
+                flower.style.height = size + 'px';
+                
+                // Случайный цвет (розовые оттенки)
+                const hue = 320 + Math.random() * 40; // розово-пурпурный диапазон
+                const color = `hsla(${hue}, 80%, 70%, 0.9)`;
+                
+                // Применяем цвет через style
+                flower.style.setProperty('--flower-color', color);
+                
+                // Добавляем стили для цвета (немного хак, но работает)
+                flower.querySelector = function() {};
+                
+                container.appendChild(flower);
+                
+                // Анимация падения
+                let posY = -10;
+                const speed = 0.5 + Math.random() * 1; // скорость
+                const startX = parseFloat(flower.style.left);
+                
+                function fall() {
+                    posY += speed;
+                    flower.style.top = posY + 'px';
+                    
+                    // Легкое покачивание влево-вправо
+                    const swing = Math.sin(posY * 0.02) * 2;
+                    flower.style.left = (startX + swing) + '%';
+                    
+                    if (posY < window.innerHeight + 20) {
+                        requestAnimationFrame(fall);
+                    } else {
+                        // Когда улетает вниз, возвращаем наверх
+                        posY = -10;
+                        flower.style.left = Math.random() * 100 + '%';
+                        requestAnimationFrame(fall);
+                    }
+                }
+                
+                requestAnimationFrame(fall);
+            }
+            
+            // Создаем 50 цветочков
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    createFlower();
+                }, i * 50);
+            }
+        }
+
+        window.onload = startFlowers;
+    </script>
 </body>
 </html>
